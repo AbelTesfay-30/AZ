@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AZAHELLTRADES | Trading Journal — ER. Abel Tesfay</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%230b0f19'/%3E%3Cpolygon points='32,2 58,17 58,47 32,62 6,47 6,17' fill='none' stroke='%232563eb' stroke-width='2'/%3E%3Cpolyline points='14,50 32,14 50,50' fill='none' stroke='%232563eb' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cline x1='20' y1='38' x2='44' y2='38' stroke='%232563eb' stroke-width='3' stroke-linecap='round'/%3E%3Crect x='29' y='20' width='6' height='12' fill='%23f59e0b' rx='1'/%3E%3Cline x1='32' y1='14' x2='32' y2='20' stroke='%23f59e0b' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='32' y1='32' x2='32' y2='37' stroke='%23f59e0b' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ═══ HEADER ═══════════════════════════════════════════════════ -->
+<header class="site-header">
+  <div class="header-inner">
+
+    <div class="brand">
+      <svg class="brand-logo" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-label="AZAHELLTRADES logo">
+        <polygon points="32,2 58,17 58,47 32,62 6,47 6,17" fill="none" stroke="#2563eb" stroke-width="1.5" opacity="0.7"/>
+        <polyline points="14,50 32,14 50,50" fill="none" stroke="#2563eb" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="20" y1="38" x2="44" y2="38" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>
+        <rect x="29" y="20" width="6" height="12" fill="#f59e0b" rx="1"/>
+        <line x1="32" y1="14" x2="32" y2="20" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>
+        <line x1="32" y1="32" x2="32" y2="37" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>
+        <polyline points="38,28 43,22 48,28" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="43" y1="22" x2="43" y2="34" stroke="#10b981" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <div class="brand-text">
+        <div class="brand-name">AZAHELL<span>TRADES</span></div>
+        <div class="brand-sub">ICT Prop &amp; Backtest Tracker</div>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <div class="owner-tag">
+        <span class="owner-label">Trader</span>
+        <span class="owner-name">ER. Abel Tesfay</span>
+      </div>
+      <button id="btn-export" class="btn btn-export">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="15" height="15"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+        Export CSV
+      </button>
+    </div>
+
+  </div>
+</header>
+
+<!-- ═══ MAIN ══════════════════════════════════════════════════════ -->
+<main class="container">
+
+  <!-- ── Stats ── -->
+  <section class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Total Trades</div>
+      <div class="stat-value" id="stat-total">0 / 100</div>
+      <div class="stat-bar-wrap"><div class="stat-bar" id="stat-bar-trades"></div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Win Rate</div>
+      <div class="stat-value val-gold" id="stat-winrate">0.0%</div>
+      <div class="stat-hint" id="stat-wl">0W · 0L · 0BE</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Net P&amp;L</div>
+      <div class="stat-value" id="stat-pnl">+0.00%</div>
+      <div class="stat-hint">wins×risk×R:R − losses×risk</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Discipline</div>
+      <div class="stat-value val-green" id="stat-discipline">—</div>
+      <div class="stat-hint">trades with 5/5 rules</div>
+    </div>
+  </section>
+
+  <!-- ── Prop Firm Target Bar ── -->
+  <div class="progress-box">
+    <div class="progress-header">
+      <span class="progress-label">🎯 Prop Firm 10% Target</span>
+      <span class="progress-pct" id="target-progress-text">0.00% / +10.00%</span>
+    </div>
+    <div class="bar-bg">
+      <div class="bar-fill" id="progress-bar"></div>
+    </div>
+    <div class="bar-legend"><span>0%</span><span>2.5%</span><span>5%</span><span>7.5%</span><span>10%</span></div>
+  </div>
+
+  <!-- ── Log Trade Form ── -->
+  <div class="card" id="form-card">
+    <div class="card-title">
+      <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zm-2.207 2.207L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/></svg>
+      Log New Trade
+    </div>
+    <form id="trade-form" novalidate>
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label for="field-date">Date &amp; Time</label>
+          <input type="datetime-local" id="field-date" required />
+        </div>
+
+        <div class="form-group">
+          <label for="field-pair">Pair / Asset</label>
+          <select id="field-pair">
+            <option value="EUR/USD">EUR/USD</option>
+            <option value="GBP/USD">GBP/USD</option>
+            <option value="NAS100">NAS100</option>
+            <option value="XAU/USD">XAU/USD (Gold)</option>
+            <option value="US30">US30</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="field-session">Session Window</label>
+          <select id="field-session">
+            <option value="NY AM Silver Bullet (5-6 PM EAT)">NY AM Silver Bullet (5–6 PM EAT)</option>
+            <option value="London Silver Bullet (10-11 AM EAT)">London Silver Bullet (10–11 AM EAT)</option>
+            <option value="NY PM Silver Bullet (9-10 PM EAT)">NY PM Silver Bullet (9–10 PM EAT)</option>
+            <option value="London Open Killzone">London Open Killzone</option>
+            <option value="NY Open Killzone">NY Open Killzone</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="field-direction">Direction</label>
+          <select id="field-direction">
+            <option value="BUY (Long)">BUY (Long)</option>
+            <option value="SELL (Short)">SELL (Short)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="field-risk">Risk Per Trade (%)</label>
+          <input type="number" step="0.05" id="field-risk" value="0.75" min="0.1" max="5.0" required />
+        </div>
+
+        <div class="form-group">
+          <label for="field-outcome">Outcome</label>
+          <select id="field-outcome">
+            <option value="WIN">WIN — Take Profit Hit</option>
+            <option value="LOSS">LOSS — Stop Loss Hit</option>
+            <option value="BE">BE — Breakeven</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="field-rr">Realized R:R</label>
+          <input type="number" step="0.1" id="field-rr" value="2.5" placeholder="e.g. 2.5" />
+        </div>
+
+        <!-- Checklist -->
+        <div class="checklist-group">
+          <div class="checklist-title">
+            <svg viewBox="0 0 20 20" fill="currentColor" width="13" height="13"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414L8.414 15l-5.121-5.121a1 1 0 011.414-1.414L8.414 12.172l6.879-6.879a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            5-Point Rule Checklist
+          </div>
+          <div class="checklist-items">
+            <label class="check-label"><input type="checkbox" id="chk-htf"   checked /><span class="chk-box"></span>1. HTF Draw on Liquidity Mapped</label>
+            <label class="check-label"><input type="checkbox" id="chk-sweep" checked /><span class="chk-box"></span>2. 15M/1H Liquidity Swept</label>
+            <label class="check-label"><input type="checkbox" id="chk-mss"   checked /><span class="chk-box"></span>3. MSS + Displacement FVG</label>
+            <label class="check-label"><input type="checkbox" id="chk-eq"    checked /><span class="chk-box"></span>4. Premium / Discount (50% EQ)</label>
+            <label class="check-label"><input type="checkbox" id="chk-risk"  checked /><span class="chk-box"></span>5. Max 1 Trade Today</label>
+          </div>
+        </div>
+
+        <div class="form-group full-col">
+          <label for="field-notes">Notes, Psychology &amp; Lessons</label>
+          <textarea id="field-notes" rows="3" placeholder="What did you feel before entry? Did you wait for confirmation? Any FOMO or hesitation?"></textarea>
+        </div>
+
+        <div class="btn-row">
+          <button type="submit" class="btn btn-primary">+ Add Trade</button>
+          <button type="button" id="btn-clear" class="btn btn-ghost">Clear</button>
+        </div>
+
+      </div>
+    </form>
+  </div>
+
+  <!-- ── Trade History ── -->
+  <div class="card">
+    <div class="card-title">
+      <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M5 4a3 3 0 00-3 3v6a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3H5zm-1 9v-1h5v2H5a1 1 0 01-1-1zm7 1h4a1 1 0 001-1v-1h-5v2zm0-4h5V8h-5v2zM9 8H4v2h5V8z" clip-rule="evenodd"/></svg>
+      Trade Execution History
+      <span class="trade-count" id="trade-count"></span>
+    </div>
+
+    <!-- Mobile cards (shown on small screens) -->
+    <div class="mobile-trades" id="mobile-trades"></div>
+
+    <!-- Desktop table (hidden on small screens) -->
+    <div class="table-container">
+      <table id="trades-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Date &amp; Time</th>
+            <th>Pair</th>
+            <th>Session</th>
+            <th>Direction</th>
+            <th>Outcome</th>
+            <th>Net %</th>
+            <th>R:R</th>
+            <th>Rules</th>
+            <th>Notes</th>
+            <th>Del</th>
+          </tr>
+        </thead>
+        <tbody id="trades-body"></tbody>
+      </table>
+    </div>
+
+    <div class="empty-state" id="empty-state">
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="40" height="40">
+        <rect x="6" y="10" width="36" height="30" rx="3" stroke="#1e293b" stroke-width="2"/>
+        <line x1="6" y1="18" x2="42" y2="18" stroke="#1e293b" stroke-width="2"/>
+        <line x1="16" y1="10" x2="16" y2="40" stroke="#1e293b" stroke-width="2"/>
+        <circle cx="28" cy="29" r="5" stroke="#2563eb" stroke-width="2"/>
+      </svg>
+      <p>No trades yet — log your first execution above.</p>
+    </div>
+  </div>
+
+</main>
+
+<!-- ═══ FOOTER ════════════════════════════════════════════════════ -->
+<footer class="site-footer">
+  <span>AZAHELLTRADES &copy; 2025</span>
+  <span class="sep">·</span>
+  <span>Personal journal of <strong>ER. Abel Tesfay</strong></span>
+  <span class="sep">·</span>
+  <span>Data saved in your browser</span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
